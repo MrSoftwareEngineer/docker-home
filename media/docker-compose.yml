@@ -1,0 +1,33 @@
+version: '3.8'
+
+volumes:
+  plex_config:
+    external:
+      name: plex_config
+  plex_transcode:
+    external:
+      name: plex_transcode
+
+services:
+  plex:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    restart: always
+    volumes:
+      - plex_config:/config \
+      - plex_transcode:/transcode
+      - /srv/plex:/data
+    ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      # This only if you want to use Plex DLNA Server
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    environment:
+      TZ: "Europe/Moscow"
+      PLEX_CLAIM: # your plex claim
